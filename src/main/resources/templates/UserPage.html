@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+</head>
+<body>
+
+<div class="nav_panel ">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom ">
+        <div class="container-fluid ">
+            <h4><a href="/"><img src="https://covr.org/wp-content/uploads/Amazon-swoop-145x100.jpg" alt="rollback"
+                                 height="20" width="30"></a>
+                <a href="/" class="heading">Магазины</a>
+                <a href="/" class="heading">Товары</a>
+                <a th:href="@{/user/{id}/userlist (id=${user.id})}" class="heading">Список покупателей</a>
+                <a href="/newAdvert" class="heading">Новое объявление</a>
+                <a href="" class="heading">Еще...</a></h4>
+            <div class="btn_danger_out">
+                <a href="/logout">
+                    <a href="/logout">
+                        <button class="btn btn-outline-danger ">Sign Out</button>
+                    </a>
+                </a>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="container-fluid ">
+    <div class="row ">
+        <div class="col-2 " th:object="${user}">
+
+            <img alt="" src="" height="150" width="150" id="avatar-image" class="avatar-image">
+            <input type="hidden" th:value="${''+user.images.picture}" class="avatar-byte-array">
+            <h4 th:text="*{username}">User Name</h4>
+            <button type="button" class="btn btn-primary" th:onclick="'getProfileForEdit(' + ${user.getId()} + ')'"
+                    data-bs-toggle="modal" data-bs-target="#modal-edit">
+                Редактировать данные
+            </button>
+
+            <hr/>
+            <div>
+                <input type="hidden" th:value="${user.getId()}" id="user-id" class="user-id">
+                <h5>Возвраст: <b id="user-age" th:text="*{age}">?</b>
+                </h5>
+                <h5>Пол: <b id="user-gender" th:text="*{gender}">?</b></h5>
+                <h5>Страна: <b id="user-country"
+                               th:text="${user.getAddress() != null ? user.getAddress().getCountry():'no country'}">?</b>
+                </h5>
+                <h5>Город: <b id="user-city"
+                              th:text="${ user.getAddress() != null? user.getAddress().getCity(): 'no city'}">?</b>
+                </h5>
+                <h5>Улица: <b id="user-street"
+                              th:text="${user.getAddress() != null? user.getAddress().getStreet(): 'no address'}">?</b>
+                </h5>
+                <h5>Почта: <b id="user-email" th:text="*{email}">?</b></h5>
+                <h5>Телефон: <b id="user-phone" th:text="*{phone}">?</b></h5>
+            </div>
+            <hr/>
+            <div class="links">
+                <h5><a th:href="@{/user-cart-page}">Корзина</a></h5>
+                <h5><a th:href="@{/user-orders}">История заказов</a></h5>
+                <h5><a th:href="@{/user-item}">Проданные товары</a></h5>
+                <h5 style="color: #fdbf2f; cursor: pointer;"><a data-bs-toggle="modal" data-bs-target="#discount"> Мои
+                    скидки </a></h5>
+                <h5><a th:href="@{/user-reports}">Отчеты</a></h5>
+                <h5 style="color: #fdbf2f; cursor: pointer;"><a data-bs-toggle="modal" data-bs-target="#coupons">
+                    Мои купоны
+                </a></h5>
+            </div>
+        </div>
+        <!-- Modal For DISCOUNTS-->
+        <div class="modal fade" id="discount" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Мои скидки</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div><!-- BODY -->
+                    <div class="modal-body">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Скидка, %</th>
+                                <th>Фиксированная скидка</th>
+                                <th>Магазин</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="disc : ${discount}">
+                                <td th:text="${disc.getPercentage()}"></td>
+                                <td th:text="${disc.getFixedDiscount()}"></td>
+                                <td th:text="${disc.getShop().getName()}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- END BODY -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END Modal -->
+        <!-- Modal For COUPONS-->
+        <div class="modal fade" id="coupons" tabindex="-1" aria-labelledby="exampleModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModal">Мои купоны</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Все купоны</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-actual-tab" data-bs-toggle="pill" data-bs-target="#pills-actual" type="button" role="tab" aria-controls="pills-actual" aria-selected="false">Действительные</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-used-tab" data-bs-toggle="pill" data-bs-target="#pills-used" type="button" role="tab" aria-controls="pills-used" aria-selected="false">Использованные</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-overdue-tab" data-bs-toggle="pill" data-bs-target="#pills-overdue" type="button" role="tab" aria-controls="pills-overdue" aria-selected="false">Просроченные</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                <div class="allCoupons">
+                                    <!-- FOR JS  -->
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="pills-actual" role="tabpanel" aria-labelledby="pills-actual-tab">
+                                <div class="actualCoupons">
+                                    <!-- FOR JS  -->
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="pills-used" role="tabpanel" aria-labelledby="pills-used-tab">
+                                <div class="usedCoupons">
+                                    <!-- FOR JS  -->
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="pills-overdue" role="tabpanel" aria-labelledby="pills-overdue-tab">
+                                <div class="overdueCoupons">
+                                    <!-- FOR JS  -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END Modal -->
+        <div class="col-10">
+            <div class="container user-navlinks">
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="btn btn btn-outline-warning active" id="user-shops-tab" data-bs-toggle="pill"
+                                data-bs-target="#user-shops" type="button" role="tab" aria-controls="user-shops"
+                                aria-selected="true">Мои Магазины
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="btn btn btn-outline-warning" id="pills-profile-tab" data-bs-toggle="pill"
+                                data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
+                                aria-selected="false">Мои Заказы
+                        </button>
+                    </li>
+                </ul>
+            </div>
+            <div class="container container-content">
+                <div class="tab-content " id="pills-tabContent">
+                    <div class="tab-pane fade show active " id="user-shops" role="tabpanel"
+                         aria-labelledby="user-shops-tab">
+                    </div>
+
+                    <div class="tab-pane  items-table" id="pills-profile" role="tabpanel"
+                         aria-labelledby="pills-profile-tab">
+
+                        <div class="card mb-4 rounded-3 shadow-sm">
+                            <div class="card-header py-3">
+                                <b>Заказы от</b>
+                            </div>
+                            <div class="card-body">
+                                <h5>Адрес доставки:</h5>
+                                <table class="table" id="items-table">
+                                    <tr>
+                                        <th>Изображение</th>
+                                        <th>Имя товара</th>
+                                        <th>Категории</th>
+                                        <th>Цена</th>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="card-header py-3">
+                                <b>Сумма заказа</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:replace="modal/userShopAddForm"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--</div>-->
+
+<!--модальное окно для редактирования пользователя-->
+<div class="modal fade" id="modal-edit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content border-light border-3">
+            <div class="modal-header bg-secondary text-light">
+                <h5 class="modal-title" id="staticBackdropLabel">Редактировать
+                </h5>
+                <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-3">
+                    <div class="col-md-6">
+                        <label for="edit-name" class="form-label">Имя</label>
+                        <input type="text" class="form-control" id="edit-name">
+                        <div class="alert alert-danger" role="alert" style="display: none" id="if-name-empty">
+                            Введите имя
+                        </div>
+                        <input type="hidden" class="form-control" id="edit-id">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="edit-surname" class="form-label">Фамилия</label>
+                        <input type="text" class="form-control" id="edit-surname">
+                        <div class="alert alert-danger" role="alert" style="display: none" id="if-surname-empty">
+                            Введите фамилию
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="edit-date" class="form-label">Дата рождения</label>
+                        <input type="date" class="form-control" id="edit-date">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="edit-email" class="form-label">Почта</label>
+                        <input type="email" class="form-control" id="edit-email">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="edit-username" class="form-label">Username</label>
+                        <input readonly type="text" class="form-control" id="edit-username">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="edit-password" class="form-label">Пароль</label>
+                        <input type="password" class="form-control" id="edit-password">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="edit-phone" class="form-label">Телефон</label>
+                        <input type="tel" class="form-control" id="edit-phone" value="+7">
+                    </div>
+                    <div class="col-md-6" id="sex">
+                        <label for="checkBox" class="form-label">Пол</label><br>
+                        <div class="form-check" id="checkBox">
+                            <input class="form-check-input" type="radio" name="gender" id="MALE" value="MALE">
+                            <label class="form-check-label" for="MALE">
+                                Муж
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gender" id="FEMALE" value="FEMALE">
+                            <label class="form-check-label" for="FEMALE">
+                                Жен
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gender" id="UNKNOWN" value="UNKNOWN">
+                            <label class="form-check-label" for="UNKNOWN">
+                                ...
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="edit-country" class="form-label">Страна</label>
+                        <input type="text" class="form-control" id="edit-country" onclick="clearField()">
+                        <div class="alert alert-danger" role="alert" style="display: none" id="if-country-empty">
+                            Введите страну
+                        </div>
+                        <input type="hidden" class="form-control" id="edit-address-id">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="edit-city" class="form-label">Город</label>
+                        <input type="text" class="form-control" id="edit-city">
+                        <div class="alert alert-danger" role="alert" style="display: none" id="if-city-empty">
+                            Введите город
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="edit-street" class="form-label">Улица</label>
+                        <input type="text" class="form-control" id="edit-street">
+                        <div class="alert alert-danger" role="alert" style="display: none" id="if-street-empty">
+                            Введите улицу
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="edit-house" class="form-label">Дом</label>
+                        <input type="text" class="form-control" id="edit-house">
+                        <div class="alert alert-danger" role="alert" style="display: none" id="if-house-empty">
+                            Введите дом
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="edit-cityIndex" class="form-label">Индекс</label>
+                        <input type="text" class="form-control" id="edit-cityIndex">
+                        <div class="alert alert-danger" role="alert" style="display: none" id="if-cityIndex-empty">
+                            Введите индекс
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-outline-dark" onclick="sendProfileForEdit()">Изменить
+                        </button>
+                        <button type="submit" class="btn btn-outline-danger" onclick="sendProfileForDeactivate()">
+                            Удалить профиль
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"
+        integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"
+        integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/"
+        crossorigin="anonymous"></script>
+<script src="/js/UserPage.js"></script>
+<script src="/js/coupons.js"></script>
+<link rel="stylesheet" href="/css/UserPageStyle.css"/>
+</body>
+
+
+</html>

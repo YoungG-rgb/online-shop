@@ -1,0 +1,37 @@
+<dataset>
+    <item id="1" count="100" description="item1_description" discount="0" is_moderate_accept="0"
+          is_moderated="0" is_pretendent_to_be_deleted="0" name="item1" price="111111.00" rating="1.0" shop_id="1"/>
+    <item id="2" count="200" description="item2_description" discount="0" is_moderate_accept="0"
+          is_moderated="0" is_pretendent_to_be_deleted="0" name="item2" price="222222.00" rating="2.0" shop_id="1"/>
+
+    <shop id="1" activity="0" count="0" description="shop1_description" email="shop1@mail"
+          is_moderate_accept="0" is_moderated="0" is_pretendent_to_be_deleted="0" name="shop1"
+          phone="shop1_phone" rating="0.0" location_id="1"
+    />
+
+    <user id="6" activate="1" activation_code="user4_activation_code" age="27"
+          birthday="1994-05-04 00:00:00" email="user4@mail" first_name="user4_firstname"
+          gender="1" last_name="user4_lastname" password="$2a$12$byJinCTIlMkQh/tTB7f8Zu5yJ5kmJTon7HkVAN5Xr8hqp5Gv5cOI6"
+          phone="user4_phone" username="user4_username" address_id="4" favorite_id="1" image_id="6" />
+    <user id="7" activate="1" activation_code="user5_activation_code" age="26"
+          birthday="1995-06-05 00:00:00" email="user5@mail" first_name="user5_firstname"
+          gender="1" last_name="user5_lastname" password="$2a$12$MXXTQpe52MbCI.z9X7WfHOn4WE1uToQpsSo.Hdc1QG9vWEYYPJQPq"
+          phone="user5_phone" username="user5_username" address_id="5" favorite_id="2" image_id="7" />
+
+    <review id="1" date="2021-11-16" dignity="dignity_review_user4" flaw="flaw_review_user4"
+            is_moderate_accept="0" is_moderated="0" rating="4"
+            text="text_review_user4" item_id="1" user_id="6"/>
+    <review id="2" date="2021-11-16" dignity="dignity_review_user5" flaw="flaw_review_user5"
+            is_moderate_accept="0" is_moderated="0" rating="5"
+            text="text_review_user5" item_id="2" user_id="7"/>
+
+    <shop_review shop_id="1" review_id="1"/>
+    <shop_review shop_id="1" review_id="2"/>
+
+    <shop_reviews shop_id="1" reviews_id="2"/>
+
+    <user_review user_id="6" review_id="1"/>
+    <user_review user_id="7" review_id="2"/>
+
+
+</dataset>

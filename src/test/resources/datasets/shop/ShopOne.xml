@@ -1,0 +1,6 @@
+<dataset>
+        <shop id="1" activity="0" count="0" description="shop1_description" email="shop1@mail" is_moderate_accept="0"
+              is_moderated="0" is_pretendent_to_be_deleted="0" name="shop1" phone="shop1_phone" rating="0.0"
+              location_id="1" user_id="3"
+        />
+</dataset>

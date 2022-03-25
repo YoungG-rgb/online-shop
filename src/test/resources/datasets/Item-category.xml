@@ -1,0 +1,14 @@
+<dataset>
+    <item_categories item_id="1" categories_id="1" />
+    <item_categories item_id="2" categories_id="1" />
+    <item_categories item_id="2" categories_id="2" />
+    <item_categories item_id="3" categories_id="1" />
+    <item_categories item_id="3" categories_id="2" />
+    <item_categories item_id="3" categories_id="3" />
+    <item_categories item_id="4" categories_id="4" />
+    <item_categories item_id="5" categories_id="4" />
+    <item_categories item_id="5" categories_id="5" />
+    <item_categories item_id="6" categories_id="4" />
+    <item_categories item_id="6" categories_id="5" />
+    <item_categories  item_id="6" categories_id="6" />
+</dataset>

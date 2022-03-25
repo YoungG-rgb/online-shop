@@ -1,0 +1,11 @@
+<dataset>
+    <review
+            date="2021-11-17"
+            dignity="dignity_review_user6"
+            flaw="flaw_review_user6"
+            is_moderate_accept="0"
+            is_moderated="0"
+            rating="4"
+            text="text_review_user6"
+    />
+</dataset>

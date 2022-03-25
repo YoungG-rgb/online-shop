@@ -1,0 +1,8 @@
+<dataset>
+    <favorite_item favorite_id="1" item_id="1"/>
+    <favorite_item favorite_id="2" item_id="1"/>
+    <favorite_item favorite_id="2" item_id="4"/>
+    <favorite_item favorite_id="3" item_id="1"/>
+    <favorite_item favorite_id="3" item_id="2"/>
+    <favorite_item favorite_id="3" item_id="6"/>
+</dataset>
